@@ -1,0 +1,8 @@
+/target
+target
+Cargo.lock
+zip
+1.zip
+compressed_file
+cargo.log
+.env
