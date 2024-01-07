@@ -46,8 +46,8 @@ fn items_to_blog(items: Vec<HashMap<String, AttributeValue>>) -> Result<Blog, DD
     };
 
     for item in items {
-        let sK = required_item_value("sK", &item)?;
-        match sK.as_str() {
+        let s_k = required_item_value("sK", &item)?;
+        match s_k.as_str() {
             "meta" => {
                 blog.title = item_value("title", &item)?;
                 blog.about = item_value("about", &item)?;
@@ -57,7 +57,7 @@ fn items_to_blog(items: Vec<HashMap<String, AttributeValue>>) -> Result<Blog, DD
                 let title = item_value("title", &item)?;
                 blog.posts.push(Post {
                     blog_id: required_item_value("pK", &item)?,
-                    post_id: sK,
+                    post_id: s_k,
                     author: required_item_value("author", &item)?,
                     title,
                     content: required_item_value("content", &item)?,
@@ -78,7 +78,7 @@ impl DDBRepository {
     }
 
     pub async fn put_post(&self, post: Post) -> Result<(), DDBError> {
-        let mut request = self.client.put_item();
+        let mut request = self.client.put_item()
             .table_name(self.table_name.clone())
             .item("pK", AttributeValue::S(String::from(&post.blog_id)))
             .item("sK", AttributeValue::S(String::from(&post.post_id)))
@@ -133,12 +133,12 @@ impl DDBRepository {
         }
 
         if let Some(oldest) = oldest {
-            res = res.expresion_attribute_values(":oldest", AttributeValue::S(oldest));
+            res = res.expresion_attribute_values(":oldest", AttributeValue::S(oldest))
                 .key_condition_expression("#post_id > :oldest");
         }
 
         if let Some(newest) = newest {
-            res = res.expresion_attribute_values(":newest", AttributeValue::S(newest));
+            res = res.expresion_attribute_values(":newest", AttributeValue::S(newest))
                 .key_condition_expression("#post_id < :newest");
         }
 
