@@ -49,7 +49,7 @@ fn validate_dt(dt: Option<String>) -> Result<(), BlogError> {
 
 #[get("/{blog_id}")]
 pub async fn get_blog(
-    ddb_repo: Data<DDBRepository>, 
+    ddb_repo: Data<DDBRepository>,
     blog_id: Path<String>,
     date_range: Query<DataTimeRange>,
     request: HttpRequest,

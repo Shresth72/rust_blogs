@@ -26,6 +26,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let ddb_repo: DDBRepository = DDBRepository::init(String::from("posts"), config.clone());
         let ddb_data = Data::new(ddb_repo);
+        
         let logger = Logger::default();
 
         App::new()
